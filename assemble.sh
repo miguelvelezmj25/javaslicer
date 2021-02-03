@@ -44,7 +44,7 @@ echo
 
 success=()
 num_success=0
-echo "Pass 1: run clean and install on all projects iteratively, until all succeed:"
+echo "Pass 1: run install on all projects iteratively, until all succeed:"
 while [[ $num_success != $num_projects ]]; do
   old_num_success=$num_success
   for ((i=0; i<num_projects; ++i)); do
@@ -52,7 +52,7 @@ while [[ $num_success != $num_projects ]]; do
       project=${projects[$i]}
       echo -n "  - "$project"...  "
       cd "$WORKINGDIR/$project"
-      if mvn -N -Dmaven.test.skip=true clean install >$TMPFILE 2>&1; then
+      if mvn -N -Dmaven.test.skip=true install >$TMPFILE 2>&1; then
         success[$i]=1
         num_success=$((num_success+1))
         echo success
@@ -86,7 +86,7 @@ for ((i=0; i<num_projects; ++i)); do
   echo "  - "$project
   cd "$WORKINGDIR/$project"
   output=()
-  if ! mvn -Dmaven.test.skip=true assembly:assembly >$TMPFILE 2>&1; then
+  if ! mvn -Dmaven.test.skip=true compile assembly:single >$TMPFILE 2>&1; then
     echo "failed!"
     echo
     cat $TMPFILE
