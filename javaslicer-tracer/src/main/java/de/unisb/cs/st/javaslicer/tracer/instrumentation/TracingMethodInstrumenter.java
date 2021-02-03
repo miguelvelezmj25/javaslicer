@@ -346,6 +346,12 @@ public class TracingMethodInstrumenter implements Opcodes {
             case AbstractInsnNode.LINE:
                 // ignore
                 break;
+            case AbstractInsnNode.INVOKE_DYNAMIC_INSN:
+                // ignore
+                System.err.println("Ignoring instruction type " + insnNode.getType()
+                        + " (" + insnNode.getClass().getSimpleName()+") in "
+                        + this.classNode.name + "." + this.methodNode.name);
+                break;
             default:
                 throw new RuntimeException("Unknown instruction type " + insnNode.getType()
                         + " (" + insnNode.getClass().getSimpleName()+")");
